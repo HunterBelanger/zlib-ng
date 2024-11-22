@@ -1167,7 +1167,7 @@ endif()
 if (WITH_STATIC_ONLY)
     add_library(zlibstatic STATIC ${ZLIB_ALL_SRCS})
     add_library(zlib ALIAS zlibstatic)
-    set(ZLIB_INSTALL_LIBRARIES zlib)
+    set(ZLIB_INSTALL_LIBRARIES zlibstatic)
 
     if (WITH_PIC)
         set_property(TARGET zlibstatic PROPERTY POSITION_INDEPENDENT_CODE ON)
