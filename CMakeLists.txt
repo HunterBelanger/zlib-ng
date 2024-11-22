@@ -96,7 +96,8 @@ option(WITH_CODE_COVERAGE "Enable code coverage reporting" OFF)
 option(WITH_INFLATE_STRICT "Build with strict inflate distance checking" OFF)
 option(WITH_INFLATE_ALLOW_INVALID_DIST "Build with zero fill for inflate invalid distances" OFF)
 option(WITH_UNALIGNED "Support unaligned reads on platforms that support it" ON)
-option(WITH_PIC "Enable Position Independent Code on static libraries" OFF)
+option(WITH_STATIC_ONLY "Only build static library" OFF)
+option(WITH_PIC "Enable Position Independent Code on static library" OFF)
 
 set(ZLIB_SYMBOL_PREFIX "" CACHE STRING "Give this prefix to all publicly exported symbols.
 Useful when embedding into a larger library.
@@ -1163,7 +1164,15 @@ if(NOT DEFINED BUILD_SHARED_LIBS OR BUILD_SHARED_LIBS)
     set(ZLIB_DLL_SRCS win32/zlib${SUFFIX}1.rc)
 endif()
 
-if(NOT DEFINED BUILD_SHARED_LIBS)
+if (WITH_STATIC_ONLY)
+    add_library(zlibstatic STATIC ${ZLIB_ALL_SRCS})
+    add_library(zlib ALIAS zlibstatic)
+    set(ZLIB_INSTALL_LIBRARIES zlib)
+
+    if (WITH_PIC)
+        set_property(TARGET zlibstatic PROPERTY POSITION_INDEPENDENT_CODE ON)
+    endif()
+elseif(NOT DEFINED BUILD_SHARED_LIBS)
     add_library(zlib SHARED ${ZLIB_ALL_SRCS} ${ZLIB_DLL_SRCS})
     add_library(zlibstatic STATIC ${ZLIB_ALL_SRCS})
 
