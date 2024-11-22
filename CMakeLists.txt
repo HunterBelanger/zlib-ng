@@ -1181,7 +1181,7 @@ else()
         add_library(zlibstatic ALIAS zlib)
 
         if (WITH_PIC)
-            set_property(TARGET zlibstatic PROPERTY POSITION_INDEPENDENT_CODE ON)
+            set_property(TARGET zlib PROPERTY POSITION_INDEPENDENT_CODE ON)
         endif()
     endif()
 
